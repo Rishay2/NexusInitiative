@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Maintenance Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        table {
+            background-color: lightgray;
+            border-collapse: collapse;
+            width: 70%; /* Adjusted width for better visibility */
+        }
+
+        th {
+            background-color: black;
+            color: white;
+            width: 15%; /* Adjusted width for better visibility */
+        }
+
+        td, th {
+            padding: 5px;
+            border: 1px solid black;
+            text-align: center; /* Center-align content */
+        }
+
+        body {
+            background-image: url(https://www.dut.ac.za/wp-content/uploads/2022/03/Romeopic-870x580.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .AddRow {
+            background-color: #0a0a23;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            width: 250px;
+            transition: 0.3s ease;
+        }
+
+            .AddRow:hover {
+                transform: scale(1.1);
+            }
+    </style>
+</head>
+<body>
+    <h1>Maintenance Reports</h1>
+    <div>
+        <button class="AddRow" onclick="addRow()">Add Row</button>
+        <button onclick="sortSeverity('HIGH')">Sort by High Severity</button>
+        <button onclick="sortSeverity('MEDIUM')">Sort by Medium Severity</button>
+        <button onclick="sortSeverity('LOW')">Sort by Low Severity</button>
+        <br />
+        <br />
+        <table id="myTable">
+            <tr>
+                <th>Campus</th>
+                <th>Report</th>
+                <th>Severity</th>
+                <th>Progress</th>
+                <th>Staff</th> <!-- Added Staff column -->
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td contenteditable="true">Steve Biko</td>
+                <td contenteditable="true">Library Cracked glass</td>
+                <td>
+                    <select contenteditable="true">
+                        <option value="HIGH">HIGH</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="LOW">LOW</option>
+                    </select>
+                </td>
+                <td>
+                    <select contenteditable="true">
+                        <option value="Completed">Completed</option>
+                        <option value="In-Progress">In-Progress</option>
+                        <option value="Not yet started">Not yet started</option>
+                    </select>
+                </td>
+                <td contenteditable="true">John Doe</td> <!-- Added editable Staff column -->
+                <td>
+                    <i class="fas fa-edit" onclick="makeEditable(this)"></i>
+                    <i class="fas fa-trash-alt" onclick="deleteRow(this)"></i>
+                </td>
+            </tr>
+            <tr>
+                <td contenteditable="true">Ritson</td>
+                <td contenteditable="true">Broken window</td>
+                <td>
+                    <select contenteditable="true">
+                        <option value="HIGH">HIGH</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="LOW">LOW</option>
+                    </select>
+                </td>
+                <td>
+                    <select contenteditable="true">
+                        <option value="Completed">Completed</option>
+                        <option value="In-Progress">In-Progress</option>
+                        <option value="Not yet started">Not yet started</option>
+                    </select>
+                </td>
+                <td contenteditable="true">Jane Doe</td> <!-- Added editable Staff column -->
+                <td>
+                    <i class="fas fa-edit" onclick="makeEditable(this)"></i>
+                    <i class="fas fa-trash-alt" onclick="deleteRow(this)"></i>
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <script>
+            function deleteRow(icon) {
+                var row = icon.parentNode.parentNode;
+                row.parentNode.removeChild(row);
+            }
+
+            function addRow() {
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(-1); // Insert at the last position
+
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                var cell5 = row.insertCell(4);
+                var cell6 = row.insertCell(5);
+
+                cell1.innerHTML = "<div contenteditable='true'>New Campus</div>";
+                cell2.innerHTML = "<div contenteditable='true'>New Report</div>";
+                cell3.innerHTML = `
+                                                    <select>
+                                                        <option value="HIGH">HIGH</option>
+                                                        <option value="MEDIUM">MEDIUM</option>
+                                                        <option value="LOW">LOW</option>
+                                                    </select>`;
+                cell4.innerHTML = `
+                                                    <select>
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="In-Progress">In-Progress</option>
+                                                        <option value="Not yet started">Not yet started</option>
+                                                    </select>`;
+                cell5.innerHTML = "<div contenteditable='true'>New Staff</div>";
+                cell6.innerHTML = "<i class='fas fa-edit' onclick='makeEditable(this)'></i> <i class='fas fa-trash-alt' onclick='deleteRow(this)'></i>";
+            }
+
+            function makeEditable(btn) {
+                var row = btn.parentNode.parentNode;
+                var cells = row.getElementsByTagName('td');
+
+                for (var i = 0; i < cells.length - 1; i++) {
+                    if (i !== 3 && i !== 5) { // Skip making Progress and Action columns editable
+                        if (cells[i].querySelector('select')) {
+                            cells[i].querySelector('select').removeAttribute('disabled');
+                        }
+                        else {
+                            cells[i].setAttribute('contenteditable', true);
+                            cells[i].classList.add('editable');
+                        }
+                    }
+                }
+                btn.classList.remove('fa-edit');
+                btn.classList.add('fa-save');
+                btn.setAttribute('onclick', 'saveChanges(this)');
+            }
+
+            function saveChanges(btn) {
+                var row = btn.parentNode.parentNode;
+                var cells = row.getElementsByTagName('td');
+
+                for (var i = 0; i < cells.length - 1; i++) {
+                    if (i !== 3 && i !== 5) { // Skip making Progress and Action columns editable
+                        if (cells[i].querySelector('select')) {
+                            cells[i].querySelector('select').setAttribute('disabled', 'disabled');
+                        }
+                        else {
+                            cells[i].removeAttribute('contenteditable');
+                            cells[i].classList.remove('editable');
+                        }
+                    }
+                }
+                btn.classList.remove('fa-save');
+                btn.classList.add('fa-edit');
+                btn.setAttribute('onclick', 'makeEditable(this)');
+            }
+
+            function sortSeverity(severity) {
+                var table, rows, switching, i, x, y, shouldSwitch;
+                table = document.getElementById("myTable");
+                switching = true;
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+                    for (i = 1; i < (rows.length - 1); i++) {
+                        shouldSwitch = false;
+                        x = rows[i].getElementsByTagName("TD")[2];
+                        y = rows[i + 1].getElementsByTagName("TD")[2];
+                        if (severity === "HIGH") {
+                            if (x.innerHTML < y.innerHTML) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else if (severity === "MEDIUM") {
+                            if (x.innerHTML > y.innerHTML) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else if (severity === "LOW") {
+                            if (x.innerHTML > y.innerHTML) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (shouldSwitch) {
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                    }
+                }
+            }
+        </script>
+
+    </div>
+</body>
+{% endblock %}
+</html>

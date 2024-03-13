@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        table {
+            background-color: lightgray;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+            width: 50%;
+        }
+
+        td, th {
+            padding: 5px;
+            border: 1px solid black;
+        }
+        body {
+            background-image: url(https://sanudc.weebly.com/uploads/1/1/5/5/115547363/20160721-091014_orig.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+<body>
+    <table id="myTable">
+        <tr>
+            <th>Campus</th>
+            <th>Report</th>
+            <th>Severity</th>
+            <th>Progress</th>
+            <th>Staff</th> <!-- Added Staff column -->
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Steve Biko</td>
+            <td>Library Cracked glass</td>
+            <td>
+                add string
+            </td>
+            <td>
+                add string
+            </td>
+            <td>John Doe</td> <!-- Added editable Staff column -->
+            <td>
+                <i class="fas fa-trash-alt" onclick="deleteRow(this)"></i>
+            </td>
+        </tr>
+        <tr>
+            <td>Ritson</td>
+            <td>Broken window</td>
+            <td>
+                Add string
+            </td>
+            <td>
+                add string
+            </td>
+            <td>Jane Doe</td>
+            <td>
+                <i class="fas fa-trash-alt" onclick="deleteRow(this)"></i>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <script>
+        function deleteRow(icon) {
+            var row = icon.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+    </script>
+</body>
+{% endblock %}
+</html>
